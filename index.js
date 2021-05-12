@@ -18,6 +18,7 @@ const API_KEY1 =
 sgMail.setApiKey(API_KEY1);
 sgClient.setApiKey(API_KEY1);
 //funtion to retrieve email which not sent successfully
+//Since SendGrid API is Asynchronus, so this may not work expected
 const RetriveInvalidEmails = (res, Emails) => {
   const request = {
     method: "GET",
@@ -101,16 +102,13 @@ app.post("/", async (req, res) => {
   });
   const msg = {
     personalizations: personalizations,
-    from: "pachory1997@gmail.com", // Change to your verified sender
+    from: "pachory1997@gmail.com",
     subject: "Globalshala backend task",
     html: htmlcontent,
     attachments: attachments,
   };
   try {
     let data = await sgMail.send(msg);
-    var current = new Date();
-    let minutes = current.getMinutes();
-    let i = 0;
     RetriveInvalidEmails(res, Emails);
   } catch (err) {
     console.log(err);
@@ -127,10 +125,10 @@ app.get("/", (req, res, next) => {
 app.listen(process.env.PORT || port, () => {
   console.log(`SendGrid app listening at http://localhost:${port}`);
 });
-//utility Get Response
+//Get Response
 const GetResponse = `<pre>How To Use This API
   1. Method of request must be POST
-  2. URL is https://vkswhyglobalshalaintern.herokuapp.com/
+  2. URL is https://lakshy12.herokuapp.com/
   3. Set the headers of request as follows:
       a. 'Accept':'application/json, text/plain, /'
       b. 'Content-Type':'application/json'
